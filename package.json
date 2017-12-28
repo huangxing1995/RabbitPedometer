@@ -10,7 +10,9 @@
 		"prop-types": "^15.6.0",
 		"react": "16.0.0-alpha.6",
 		"react-native": "0.44.3",
-		"react-native-sensors": "^2.4.2"
+		"react-native-percentage-circle": "^1.0.6",
+		"react-native-sensors": "^2.4.2",
+		"react-navigation": "^1.0.0-beta.22"
 	},
 	"devDependencies": {
 		"babel-jest": "22.0.4",

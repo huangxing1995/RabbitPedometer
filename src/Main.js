@@ -22,14 +22,14 @@ class Main extends React.PureComponent<void, Props, void> {
 	componentWillReceiveProps() {
 		// this.spinValue.setValue(0)
 		this.props.Accelerometer;
-		debugger
 		
 		if (this.props.Accelerometer) {
+			this.props.Accelerometer;
 			Animated.timing(
 				this.spinValue,
 				{
 					toValue: -this.props.Accelerometer.z,
-					duration: 800,
+					duration: 80,
 					easing: Easing.ease
 				}).start();
 		}
@@ -62,7 +62,7 @@ class Main extends React.PureComponent<void, Props, void> {
 
 export default sensors({
 	Accelerometer: {
-		updateInterval: 1200, // optional
+		updateInterval: 120, // optional
 	},
 	Gyroscope: false,
 })(Main);

@@ -11,6 +11,7 @@ import {
 	Text,
 	View
 } from 'react-native';
+import ScrollableTabView,{DefaultTabBar} from 'react-native-scrollable-tab-view'
 import Main from './src/Main'
 
 export default class Pedometer extends Component {
@@ -33,16 +34,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: '#F5FCFF',
-	},
-	welcome: {
-		fontSize: 20,
-		textAlign: 'center',
-		margin: 10,
-	},
-	instructions: {
-		textAlign: 'center',
-		color: '#333333',
-		marginBottom: 5,
 	},
 	descriptionText: {
 		elevation: 1,
