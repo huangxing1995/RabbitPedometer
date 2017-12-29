@@ -60,7 +60,7 @@ class ColumnChart extends Component{
 				<View style={styles.photo}>
 					<Image
 						style={{width: pxToDp(100),height: pxToDp(100)}}
-						source={require('../../../resource/judy.jpeg')}
+						source={require('../../../resource/nick.jpg')}
 						resizeMode='cover'/>
 				</View>
 			</ScrollView>

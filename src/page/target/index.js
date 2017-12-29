@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import {View,Text,TouchableOpacity,Image,StyleSheet} from 'react-native'
-
+import Info from './Info'
 
 export default class Target extends Component{
 	
@@ -19,11 +19,16 @@ export default class Target extends Component{
 		}
 		
 	}
+	
+	constructor(props){
+		super(props);
+		// this.state={
+		// 	isInEditMode:false
+		// }
+	}
 	render(){
 		return(
-			<View style={styles.wrapper}>
-				<Text>this target page</Text>
-			</View>
+			<Info/>
 		)
 	}
 }

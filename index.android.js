@@ -11,9 +11,8 @@ import {
 	Text,
 	View
 } from 'react-native';
-import ScrollableTabView,{DefaultTabBar} from 'react-native-scrollable-tab-view'
 import Main from './src/Main'
-
+import App from './src/App'
 export default class Pedometer extends Component {
 	render() {
 		return (
@@ -44,4 +43,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-AppRegistry.registerComponent('Pedometer', () => Pedometer);
+AppRegistry.registerComponent('Pedometer', () => App);
