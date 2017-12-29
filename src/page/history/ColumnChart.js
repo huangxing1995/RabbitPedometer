@@ -67,7 +67,6 @@ class ColumnChart extends Component{
 		)
 	}
 }
-
 const styles = StyleSheet.create({
 	wrapper:{
 		backgroundColor:'#f0f0f0',

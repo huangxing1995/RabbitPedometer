@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 		backgroundColor:'#f0f0f0'
 	},
 	progress:{
-		height:pxToDp(500),
+		height:pxToDp(470),
 		justifyContent:'center',
 		alignItems:'center',
 		backgroundColor:'#f0f0f0'
