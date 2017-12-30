@@ -6,68 +6,62 @@ import {
 	Image,
 	StyleSheet,
 	ScrollView,
-	TextInput,
-	Platform
 } from 'react-native'
+import Item from './Item'
 import {pxToDp} from '../../util'
+import stepStore from '../../store'
+import {wrapComponent} from 'react-eflow'
 
-const FIRST_NAME = '姓';
-const LAST_NAME = '名';
-const AGE = '年龄';
-const HEIGHT = '身高';
-const SEX = '性别';
-const TARGET = '目标步数';
-
-const KEY = 0;
-const VALUE = 1;
-
-class Item extends Component{
-	static defaultProps = {
-		pair:['','未设置']
-	}
-	constructor(props){
-		super(props);
-		this.map = new Map([
-			[FIRST_NAME,'Judy'],
-			[LAST_NAME,'Smith'],
-			[AGE,'18'],
-			[HEIGHT,'168cm'],
-			[SEX,'female'],
-			[TARGET,'8000'],
-		]);
+export class Info extends Component{
+	constructor(){
+		super();
+		this.newInfo = new Map();
 		this.state = {
-			text:''
+			isInEditMode:false,
+			isClickCancel:false
 		}
 	}
 	componentDidMount(){
-		let v = this.map.get(this.props.infoItem);
-		this.setState({text:v})
+		this.newInfo = this.props.info && this.props.info;
+	}
+	handleChangeInfo(type, value){
+		this.newInfo.set(type,value)
+	}
+	handleSave(){
+		stepStore.setInfo(this.newInfo);
+		this.handleSwitchMode(this.state.isInEditMode)
+	}
+	handleCancel(){
+		this.newInfo = this.props.info && this.props.info;
+		this.handleSwitchMode(this.state.isInEditMode);
+		this.setState({isClickCancel:true},()=>this.setState({isClickCancel:false}))
+		
+	}
+	handleSwitchMode(mode){
+		this.setState({isInEditMode:!mode})
 	}
 	render(){
-		const underlineColorAndroid = Platform.OS == 'android' ? {underlineColorAndroid:'transparent',padding:0}:null;
-		return(
-			<View style={styles.item}>
-				<Text style={styles.txt}>{this.props.infoItem}</Text>
-				{/*<Text style={styles.txt}>{this.map.get(this.props.infoItem)}</Text>*/}
-				<TextInput
-					style={[{width:80,height: 40, borderColor: 'transparent', borderWidth: 1},underlineColorAndroid]}
-					onChangeText={(text) => this.setState({text})}
-					value={this.state.text}
-				/>
+		let {info} = this.props;
+		
+		let outEditModeView = (
+			<View style={styles.footer}>
+				<TouchableOpacity style={[styles.btn,styles.save]} onPress={()=>this.handleSwitchMode(this.state.isInEditMode)}>
+					<Text style={{fontSize:18,color:'#ff4560'}}>修改</Text>
+				</TouchableOpacity>
 			</View>
-		)
-	}
-}
-export default class Info extends Component{
-	constructor(){
-		super();
-		this.state = {
-			info: [FIRST_NAME,LAST_NAME,AGE,HEIGHT,SEX,TARGET]
-		}
-	}
-	componentWillMount(){
-	}
-	render(){
+		);
+		let inEditModeView = (
+			<View style={styles.footer}>
+				<TouchableOpacity style={[styles.btn,styles.save]} onPress={()=>this.handleSave()}>
+					<Text style={{fontSize:18,color:'#ff4560'}}>保存</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={[styles.btn,styles.cancel]}  onPress={()=>this.handleCancel()}>
+					<Text style={{fontSize:18,color:'#666666'}}>取消</Text>
+				</TouchableOpacity>
+			</View>
+		);
+		
+		
 		return(
 			<ScrollView style={styles.wrapper} contentContainStyle={styles.contentStyle}>
 				<View style={styles.header}>
@@ -85,19 +79,24 @@ export default class Info extends Component{
 				</View>
 				<View style={styles.list}>
 					{
-						this.state.info.map((infoItem, index) => {
-							return <Item infoItem={infoItem} key={index}/>
+						[...info].map((infoItem, index) => {
+							return (
+								<Item
+									infoItem={infoItem}
+									type={infoItem[0]}
+									key={index}
+									onChangeInfo={(type, value)=>this.handleChangeInfo(type, value)}
+									isInEditMode={this.state.isInEditMode}
+									isClickCancel={this.state.isClickCancel}
+								/>)
 						})
 					}
 				</View>
-				<View style={styles.footer}>
-					<TouchableOpacity style={[styles.btn,styles.save]}>
-						<Text style={{fontSize:18,color:'#ff4560'}}>保存</Text>
-					</TouchableOpacity>
-					<TouchableOpacity style={[styles.btn,styles.cancel]}>
-						<Text style={{fontSize:18,color:'#666666'}}>取消</Text>
-					</TouchableOpacity>
-				</View>
+				{
+					this.state.isInEditMode
+					? inEditModeView
+					: outEditModeView
+				}
 			</ScrollView>
 		)
 	}
@@ -179,3 +178,4 @@ const styles = StyleSheet.create({
 		color:'#222222'
 	}
 })
+export default wrapComponent(Info, [stepStore.info])

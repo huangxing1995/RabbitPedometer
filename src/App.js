@@ -4,8 +4,8 @@ import {StackNavigator} from 'react-navigation'
 import Home from './page/home'
 import History from './page/history'
 import Target from './page/target'
+import stepStore from './store'
 const stackOptions = (navigation) => {
-	
 	return ({
 		headerStyle:{
 			backgroundColor: '#f0f0f0'
@@ -33,6 +33,8 @@ const stackOptions = (navigation) => {
 	})
 	
 };
+stepStore.init();
+
 const App = StackNavigator({
 	Home: {
 		screen: Home,

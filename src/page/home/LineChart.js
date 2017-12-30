@@ -14,28 +14,34 @@ class LineChart extends Component{
 	constructor(props){
 		super(props)
 	}
+	getMaxHeight(arr){
+		let max = 0;
+		arr.forEach((item)=>max = max>item[1]?max:item[1])
+		return max;
+	}
 	render(){
+		let {steps} = this.props;
+		this.maxHeight = this.getMaxHeight([...steps]);
 		return(
 			<View style={styles.wrapper}>
 				<View style={styles.line}>
-					{this.props.steps && this.props.steps.map((step, index, self) => {
-						let height = (step / Math.max.apply(null,self) * 110);
+					{[...steps].map(([time,step], index) => {
+						let height = (step / this.maxHeight * 110);
 						return (
 							<View style={{justifyContent:'center',alignItems:'center'}} key={index}>
 								<View>
 									<Text style={[styles.txt,{fontSize:12}]}>{step}</Text>
 								</View>
-								<View style={[styles.linearGradient,{height}]}
-								/>
+								<View style={[styles.linearGradient,{marginBottom:height}]}/>
 							</View>
 						)
 					})}
 				</View>
 				<View style={styles.time}>
-					{this.props.steps && this.props.steps.map((step, index) => {
+					{[...steps].map(([time,step], index) => {
 						return (
 							<View key={index}>
-								<Text style={[styles.txt,{fontSize:12}]} key={index}>{index*6+':00'}</Text>
+								<Text style={[styles.txt,{fontSize:12}]} key={index}>{time}</Text>
 							</View>
 						)
 					})}
@@ -49,9 +55,6 @@ const styles = StyleSheet.create({
 	wrapper:{
 		height:pxToDp(350),
 		margin:pxToDp(10),
-		// flexDirection:'row',
-		// justifyContent:'space-around',
-		// alignItems:'center',
 		backgroundColor:'#e0e0e0',
 		borderRadius:pxToDp(20)
 	},
@@ -73,5 +76,11 @@ const styles = StyleSheet.create({
 		color:'#ff9048',
 		fontSize:18,
 	},
+	linearGradient:{
+		width:pxToDp(10),
+		height:pxToDp(10),
+		backgroundColor:'#ff9048',
+		borderRadius:pxToDp(5)
+	}
 })
 export default LineChart

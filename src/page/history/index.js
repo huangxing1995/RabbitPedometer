@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import {
-	Text,
-	View,
 	TouchableOpacity,
 	Image,
-	StyleSheet,
-	ScrollView
 } from 'react-native';
-import ColumnChart from './ColumnChart'
-export default class History extends Component {
+import History from './History'
+export default class extends Component {
 	
 	static navigationOptions = ({navigation}) => {
 		let {goBack} = navigation;
@@ -23,13 +19,12 @@ export default class History extends Component {
 				fontSize: 18,
 			},
 		}
-	}
+	};
 	
 	render() {
-		let steps = [2000,3000,4000,10000,20000,40000,100];
-		return (
-			<ColumnChart steps={steps}/>
-		);
+		return(
+			<History/>
+		)
 	}
 }
 

@@ -13,9 +13,14 @@ class ColumnChart extends Component{
 	constructor(props){
 		super(props)
 	}
-	
+	getMaxHeight(arr){
+		let max = 0;
+		arr.forEach((item)=>max = max>item[1]?max:item[1])
+		return max;
+	}
 	render(){
-		let steps = this.props.steps || [];
+		let steps = this.props.steps;
+		this.maxHeight = this.getMaxHeight([...steps]);
 		return(
 			<ScrollView
 				style={styles.wrapper}
@@ -33,8 +38,8 @@ class ColumnChart extends Component{
 						<View><Text style={[styles.txt,{fontSize:16}]}>今日2087步</Text></View>
 					</View>
 					<View style={styles.column}>
-						{this.props.steps && this.props.steps.map((step, index, self) => {
-							let height = (step / Math.max.apply(null,self) * 110);
+						{[...steps].map(([day, step], index) => {
+							let height = (step / this.maxHeight * 110);
 							
 							return (
 								<View style={{justifyContent:'center',alignItems:'center'}} key={index}>
@@ -48,10 +53,10 @@ class ColumnChart extends Component{
 						})}
 					</View>
 					<View style={styles.time}>
-						{this.props.steps && this.props.steps.map((step, index) => {
+						{[...steps].map(([day,step], index) => {
 							return (
 								<View key={index}>
-									<Text style={[styles.txt,{fontSize:12}]} key={index}>{index}</Text>
+									<Text style={[styles.txt,{fontSize:12}]} key={index}>{day}</Text>
 								</View>
 							)
 						})}
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
 	},
 	linearGradient:{
 		width:pxToDp(10),
-		height:pxToDp(0),
+		height:pxToDp(10),
 		backgroundColor:'#f0d800',
 		borderRadius:pxToDp(5)
 	}
