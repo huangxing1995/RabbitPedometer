@@ -19,7 +19,8 @@ class ColumnChart extends Component{
 		return max;
 	}
 	render(){
-		let steps = this.props.steps;
+		let steps = this.props.steps; // map
+		debugger
 		this.maxHeight = this.getMaxHeight([...steps]);
 		return(
 			<ScrollView

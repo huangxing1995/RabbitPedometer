@@ -18,23 +18,31 @@ export class Home extends Component{
 	constructor(props){
 		super(props);
 	}
-	componentWillMount(){
-	}
+	// componentWillReceiveProps(){
+	// 	let {nowStep,todayStep,targetStep} = this.props;
+	// 	let percent = Number(targetStep) ? Math.ceil(Number(nowStep)/Number(targetStep)*100) : 0;
+	// 	let calorie = Math.ceil(Number(nowStep)*0.075);
+	// 	let distance = Math.ceil(Number(nowStep)*0.0007);
+	// 	this.setState({percent,nowStep,targetStep,calorie,distance})
+	// }
 	render(){
 		let {nowStep,todayStep,targetStep} = this.props;
+		let percent = Number(targetStep) ? Math.ceil(Number(nowStep)/Number(targetStep)*100) : 0;
+		let calorie = Math.ceil(Number(nowStep)*0.075);
+		let distance = Math.ceil(Number(nowStep)*0.0007);
 		return(
 			<ScrollView style={styles.wrapper}>
 				<View style={styles.progress}>
 					<PercentageCircle
 						radius={100}
-						percent={50}
+						percent={percent}
 						color={"#f07848"}
 						innerColor={'#f0f0f0'}
 						borderWidth={10}
 					>
 						<View style={styles.progressContent}>
 							<View><Text style={{fontSize:12,color:'#f07848'}}>今日已完成</Text></View>
-							<View><Text style={{fontSize:38,color:'#f07848'}}>{`${Math.ceil(nowStep/targetStep*100)}%`}</Text></View>
+							<View><Text style={{fontSize:38,color:'#f07848'}}>{percent}%</Text></View>
 							<TouchableOpacity>
 								<Text style={{fontSize:14,color:'#f07848'}}>目标：{targetStep}</Text></TouchableOpacity>
 						</View>
@@ -44,7 +52,7 @@ export class Home extends Component{
 				<View style={styles.step}>
 					<View style={styles.stepItem}>
 						<Image source={require('../../../resource/calorie.png')} style={{width:pxToDp(70),height:pxToDp(70)}}/>
-						<Text style={styles.txt}>{Math.ceil(Number(nowStep)*0.075)}卡</Text>
+						<Text style={styles.txt}>{calorie}卡</Text>
 					</View>
 					<View style={styles.stepItem}>
 						<Image source={require('../../../resource/running.png')} style={{width:pxToDp(70),height:pxToDp(70)}}/>
@@ -52,7 +60,7 @@ export class Home extends Component{
 					</View>
 					<View style={styles.stepItem}>
 						<Image source={require('../../../resource/distance.png')} style={{width:pxToDp(70),height:pxToDp(70)}}/>
-						<Text style={styles.txt}>{Math.ceil(Number(nowStep)*0.0007)}km</Text>
+						<Text style={styles.txt}>{distance}km</Text>
 					</View>
 				</View>
 				
