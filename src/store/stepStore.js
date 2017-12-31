@@ -5,6 +5,17 @@ import {AsyncStorage}from 'react-native';
 import {
 	StorageKeys,InfoType,HourType,DayType
 } from '../types'
+import RNSensors from 'react-native-sensors';
+
+
+const { Accelerometer } = RNSensors;
+
+const accelerationObservable = new Accelerometer({
+	updateInterval: 100, // defaults to 100ms
+});
+global.accelerationObservable = accelerationObservable;
+
+
 
 const mockInfo = new Map([
 	[InfoType.FIRST_NAME,'Nick'],
@@ -41,7 +52,7 @@ export default class StepStore extends Store {
 			todayStep:new Map(),
 			weekStep:new Map(),
 			nowStep:'',
-			targetStep:''
+			targetStep:{},
 			}
 		);
 	}
@@ -159,7 +170,9 @@ export default class StepStore extends Store {
 		
 		return this.targetStep.data;
 	}
-	
+	acceleration(){
+		return this.acceleration.data;
+	}
 	
 	setInfo(info){
 		this.info.dispatch(info)
@@ -180,6 +193,10 @@ export default class StepStore extends Store {
 	setTargetStep(step){
 		this.targetStep.dispatch(step)
 		// DeviceStorage.save(StorageKeys.TARGET_STEP,step)
+	}
+	setAcceleration(acc){
+		this.acceleration.dispatch(acc);
+		console.log(acc)
 	}
 }
 

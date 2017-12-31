@@ -25,8 +25,16 @@ export class Home extends Component{
 	// 	let distance = Math.ceil(Number(nowStep)*0.0007);
 	// 	this.setState({percent,nowStep,targetStep,calorie,distance})
 	// }
+	componentWillMount(){
+		accelerationObservable
+			.subscribe(acceleration => stepStore.setAcceleration(acceleration));
+	}
+	componentWillUnmount(){
+		accelerationObservable.stop();
+	}
 	render(){
-		let {nowStep,todayStep,targetStep} = this.props;
+		let {nowStep,todayStep,targetStep,acceleration} = this.props;
+		alert(acceleration);
 		let percent = Number(targetStep) ? Math.ceil(Number(nowStep)/Number(targetStep)*100) : 0;
 		let calorie = Math.ceil(Number(nowStep)*0.075);
 		let distance = Math.ceil(Number(nowStep)*0.0007);
@@ -123,4 +131,4 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default wrapComponent(Home, [stepStore.todayStep,stepStore.nowStep,stepStore.targetStep])
+export default wrapComponent(Home, [stepStore.todayStep,stepStore.nowStep,stepStore.targetStep,stepStore.acceleration])
