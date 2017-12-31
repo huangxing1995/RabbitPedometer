@@ -6,7 +6,7 @@ import {
 	StorageKeys,InfoType,HourType,DayType
 } from '../types'
 import RNSensors from 'react-native-sensors';
-
+import onSensorChanged from '../algorithm'
 
 const { Accelerometer } = RNSensors;
 
@@ -52,7 +52,7 @@ export default class StepStore extends Store {
 			todayStep:new Map(),
 			weekStep:new Map(),
 			nowStep:'',
-			targetStep:{},
+			targetStep:'',
 			}
 		);
 	}
@@ -195,8 +195,12 @@ export default class StepStore extends Store {
 		// DeviceStorage.save(StorageKeys.TARGET_STEP,step)
 	}
 	setAcceleration(acc){
-		this.acceleration.dispatch(acc);
-		console.log(acc)
+		// this.acceleration.dispatch(acc);
+		
+		let step = onSensorChanged(acc);
+		this.acceleration.dispatch(step)
+		console.log(step);
+		
 	}
 }
 
