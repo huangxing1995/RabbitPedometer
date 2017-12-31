@@ -18,13 +18,6 @@ export class Home extends Component{
 	constructor(props){
 		super(props);
 	}
-	// componentWillReceiveProps(){
-	// 	let {nowStep,todayStep,targetStep} = this.props;
-	// 	let percent = Number(targetStep) ? Math.ceil(Number(nowStep)/Number(targetStep)*100) : 0;
-	// 	let calorie = Math.ceil(Number(nowStep)*0.075);
-	// 	let distance = Math.ceil(Number(nowStep)*0.0007);
-	// 	this.setState({percent,nowStep,targetStep,calorie,distance})
-	// }
 	componentWillMount(){
 		accelerationObservable
 			.subscribe(acceleration => stepStore.setAcceleration(acceleration));
@@ -34,7 +27,7 @@ export class Home extends Component{
 	}
 	render(){
 		let {nowStep,todayStep,targetStep,acceleration} = this.props;
-		alert(acceleration);
+		// alert(acceleration);
 		let percent = Number(targetStep) ? Math.ceil(Number(nowStep)/Number(targetStep)*100) : 0;
 		let calorie = Math.ceil(Number(nowStep)*0.075);
 		let distance = Math.ceil(Number(nowStep)*0.0007);

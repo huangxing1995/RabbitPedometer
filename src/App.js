@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {Image,View,TouchableOpacity,Text} from 'react-native'
 import {StackNavigator} from 'react-navigation'
 import Home from './page/home'
 import History from './page/history'
