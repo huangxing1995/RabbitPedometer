@@ -18,9 +18,16 @@ class ColumnChart extends Component{
 		arr.forEach((item)=>max = max>item[1]?max:item[1])
 		return max;
 	}
+	getAverage(steps){ //map
+		let i = 0,sum = 0;
+		for (let [k,v] of steps){
+			sum += Number(v);
+			i++;
+		}
+		return Math.ceil(sum/i)
+	}
 	render(){
 		let steps = this.props.steps; // map
-		debugger
 		this.maxHeight = this.getMaxHeight([...steps]);
 		return(
 			<ScrollView
@@ -36,7 +43,7 @@ class ColumnChart extends Component{
 				<View style={styles.chart}>
 					<View style={styles.header}>
 						<View><Text style={[styles.txt,{fontSize:16}]}>步数</Text></View>
-						<View><Text style={[styles.txt,{fontSize:16}]}>今日2087步</Text></View>
+						<View><Text style={[styles.txt,{fontSize:16}]}>本周平均{this.getAverage(steps)}步</Text></View>
 					</View>
 					<View style={styles.column}>
 						{[...steps].map(([day, step], index) => {
