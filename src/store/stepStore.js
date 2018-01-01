@@ -63,7 +63,7 @@ export default class StepStore extends Store {
         this.step_Hour_12 = 0;
         this.step_Hour_18 = 0;
         this.step_Hour_24 = 0;
-        this.LastSevenDay_step = [];
+        this.LastSevenDay_step = [0,0,0,0,0,0,0];
 	}
 	
 	init() {
@@ -190,28 +190,10 @@ export default class StepStore extends Store {
 	}
 	setTodayStep(todayStep){// [[],[]]
 		todayStep = new Map(todayStep)
-		todayStep.set(HourType.Hour_00, this.step_Hour_00.toString())
-		todayStep.set(HourType.Hour_06, this.step_Hour_06.toString())
-		todayStep.set(HourType.Hour_12, this.step_Hour_12.toString())
-		todayStep.set(HourType.Hour_18, this.step_Hour_18.toString())
-		todayStep.set(HourType.Hour_24, this.step_Hour_24.toString())
 		this.todayStep.dispatch((todayStep))
 		storage.save({key:StorageKeys.TODAY_STEP, data:[...todayStep]})
 	}
 	setWeekStep(weekStep){// [[],[]]
-		weekStep = new Map(weekStep)
-		for(var i = 0; i < LastSevenDay; i++) {
-			if(this.LastSevenDay_step[i] === undefined) {
-				this.LastSevenDay_step[i] === 0
-			}
-		}
-		weekStep.set(DayType.DAY_1, this.LastSevenDay_step[0].toString())
-		weekStep.set(DayType.DAY_2, this.LastSevenDay_step[1].toString())
-		weekStep.set(DayType.DAY_3, this.LastSevenDay_step[2].toString())
-		weekStep.set(DayType.DAY_4, this.LastSevenDay_step[3].toString())
-		weekStep.set(DayType.DAY_5, this.LastSevenDay_step[4].toString())
-		weekStep.set(DayType.DAY_6, this.LastSevenDay_step[5].toString())
-		weekStep.set(DayType.DAY_7, this.LastSevenDay_step[6].toString())
 		this.weekStep.dispatch((weekStep))
 		storage.save({key:StorageKeys.WEEK_STEP, data:[...weekStep]})
 	}
@@ -227,7 +209,7 @@ export default class StepStore extends Store {
 	setAcceleration(acc){
 		// this.acceleration.dispatch(acc);
 		this.step = onSensorChanged(acc);
-		setNowStep(this.step)
+		this.setNowStep(this.step)
 		this.acceleration.dispatch(this.step)
 		var myDate = new Date()
 		var today = myDate.getTime()
@@ -258,8 +240,29 @@ export default class StepStore extends Store {
 				this.LastSevenDay_step.push(this.step_Hour_24)
 			}
 		}
-        setTodayStep(todayStep)
-		setWeekStep(weekStep)
+        var today_step = new Map()
+        today_step.set(HourType.Hour_00, this.step_Hour_00.toString())
+        today_step.set(HourType.Hour_06, this.step_Hour_06.toString())
+        today_step.set(HourType.Hour_12, this.step_Hour_12.toString())
+        today_step.set(HourType.Hour_18, this.step_Hour_18.toString())
+        today_step.set(HourType.Hour_24, this.step_Hour_24.toString())
+        this.setTodayStep(today_step)
+
+	    var	week_step = new Map()
+        // for(var i = 0; i < LastSevenDay; i++) {
+        //     if(this.LastSevenDay_step[i] === undefined) {
+        //         this.LastSevenDay_step[i] === 0
+        //     }
+        // }
+
+        week_step.set(DayType.DAY_1, this.LastSevenDay_step[0].toString())
+        week_step.set(DayType.DAY_2, this.LastSevenDay_step[1].toString())
+        week_step.set(DayType.DAY_3, this.LastSevenDay_step[2].toString())
+        week_step.set(DayType.DAY_4, this.LastSevenDay_step[3].toString())
+        week_step.set(DayType.DAY_5, this.LastSevenDay_step[4].toString())
+        week_step.set(DayType.DAY_6, this.LastSevenDay_step[5].toString())
+        week_step.set(DayType.DAY_7, this.LastSevenDay_step[6].toString())
+		this.setWeekStep([...week_step])
 	}
 }
 
