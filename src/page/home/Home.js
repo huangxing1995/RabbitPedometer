@@ -7,7 +7,7 @@ import {
 	StyleSheet,
 	ScrollView
 } from 'react-native'
-import PercentageCircle from 'react-native-percentage-circle';
+import ProgressCircle from 'react-native-progress-circle'
 import {pxToDp} from '../../util'
 import LineChart from './LineChart'
 import stepStore from '../../store'
@@ -34,12 +34,13 @@ export class Home extends Component{
 		return(
 			<ScrollView style={styles.wrapper}>
 				<View style={styles.progress}>
-					<PercentageCircle
-						radius={100}
+					<ProgressCircle
 						percent={percent}
-						color={"#f07848"}
-						innerColor={'#f0f0f0'}
+						radius={100}
 						borderWidth={10}
+						color="#f07848"
+						shadowColor="#e0e0e0"
+						bgColor="#f0f0f0"
 					>
 						<View style={styles.progressContent}>
 							<View><Text style={{fontSize:12,color:'#f07848'}}>今日已完成</Text></View>
@@ -47,7 +48,7 @@ export class Home extends Component{
 							<TouchableOpacity>
 								<Text style={{fontSize:14,color:'#f07848'}}>目标：{targetStep}</Text></TouchableOpacity>
 						</View>
-					</PercentageCircle>
+					</ProgressCircle>
 				</View>
 				
 				<View style={styles.step}>

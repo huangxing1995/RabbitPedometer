@@ -112,6 +112,7 @@ export default class StepStore extends Store {
 		// info
 		storage.load({key:StorageKeys.INFO})
 			.then(res=>{
+				debugger
 				this.setInfo(new Map(res))
 			})
 			.catch(err=>{
@@ -149,7 +150,7 @@ export default class StepStore extends Store {
 			.catch(err=>{
 				console.log('no data about' + StorageKeys.TARGET_STEP)
 			})
-		setTimeout(()=>this.setNowStep(6000),1000)
+		// setTimeout(()=>this.setNowStep(6000),1000)
 	}
 	info(){
 		return this.info.data;
@@ -175,32 +176,28 @@ export default class StepStore extends Store {
 	}
 	
 	setInfo(info){
+		for (let [k,v] of info){
+			console.log(k+':'+v)
+		}
 		this.info.dispatch(info)
-		// DeviceStorage.save(StorageKeys.INFO,info)
+		storage.save({key:StorageKeys.INFO, data:[...info]})
 	}
 	setTodayStep(todayStep){
 		this.todayStep.dispatch(todayStep)
-		// DeviceStorage.save(StorageKeys.TODAY_STEP,todayStep)
 	}
 	setWeekStep(weekStep){
 		this.weekStep.dispatch(weekStep)
-		// DeviceStorage.save(StorageKeys.WEEK_STEP,weekStep)
 	}
 	setNowStep(step){
 		this.nowStep.dispatch(step)
-		// DeviceStorage.save(StorageKeys.NOW_STEP,step)
 	}
 	setTargetStep(step){
 		this.targetStep.dispatch(step)
-		// DeviceStorage.save(StorageKeys.TARGET_STEP,step)
 	}
 	setAcceleration(acc){
-		// this.acceleration.dispatch(acc);
-		
 		let step = onSensorChanged(acc);
 		this.acceleration.dispatch(step)
 		console.log(step);
-		
 	}
 }
 
