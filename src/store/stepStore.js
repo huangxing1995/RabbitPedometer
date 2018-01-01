@@ -15,7 +15,7 @@ const accelerationObservable = new Accelerometer({
 });
 global.accelerationObservable = accelerationObservable;
 
-
+console.log('asd')
 
 const mockInfo = new Map([
 	[InfoType.FIRST_NAME,'Nick'],
