@@ -227,7 +227,7 @@ export default class StepStore extends Store {
 	setAcceleration(acc){
 		// this.acceleration.dispatch(acc);
 		this.step = onSensorChanged(acc);
-		this.setNowStep(this.step)
+		setNowStep(this.step)
 		this.acceleration.dispatch(this.step)
 		var myDate = new Date()
 		var today = myDate.getTime()
