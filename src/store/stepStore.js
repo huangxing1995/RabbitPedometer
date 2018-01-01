@@ -100,39 +100,34 @@ export default class StepStore extends Store {
 			enableCache: true,
 		})
 		global.storage = storage;
-		/*
-		* 第一次启动
-		* */
-		// storage.save({key:StorageKeys.INFO,data:[...mockInfo]});
-		// storage.save({key:StorageKeys.TODAY_STEP,data:[...mockTodayStep]});
-		// storage.save({key:StorageKeys.WEEK_STEP,data:[...mockWeekStep]});
-		// storage.save({key:StorageKeys.NOW_STEP,data:mockNowStep});
-		// storage.save({key:StorageKeys.TARGET_STEP,data:mockTarget});
 		
 		// info
 		storage.load({key:StorageKeys.INFO})
 			.then(res=>{
-				debugger
-				this.setInfo(new Map(res))
+				this.setInfo((res))
 			})
 			.catch(err=>{
-				console.log('no data about' + StorageKeys.INFO)
+				console.log('no data about' + StorageKeys.INFO);
+				this.setInfo([...mockInfo])
 			});
 		// today
 		storage.load({key:StorageKeys.TODAY_STEP})
 			.then(res=>{
-				this.setTodayStep(new Map(res))
+				this.setTodayStep((res))
 			})
 			.catch(err=>{
 				console.log('no data about' + StorageKeys.TODAY_STEP)
+				this.setTodayStep([...mockTodayStep])
 			})
 		// week
 		storage.load({key:StorageKeys.WEEK_STEP})
 			.then(res=>{
-				this.setWeekStep(new Map(res))
+				this.setWeekStep((res))
 			})
 			.catch(err=>{
 				console.log('no data about' + StorageKeys.WEEK_STEP)
+				this.setWeekStep([...mockWeekStep])
+				
 			})
 		// now
 		storage.load({key:StorageKeys.NOW_STEP})
@@ -141,6 +136,8 @@ export default class StepStore extends Store {
 			})
 			.catch(err=>{
 				console.log('no data about' + StorageKeys.NOW_STEP)
+				this.setNowStep(mockNowStep)
+				
 			})
 		// target
 		storage.load({key:StorageKeys.TARGET_STEP})
@@ -149,6 +146,7 @@ export default class StepStore extends Store {
 			})
 			.catch(err=>{
 				console.log('no data about' + StorageKeys.TARGET_STEP)
+				this.setTargetStep(mockTarget)
 			})
 		// setTimeout(()=>this.setNowStep(6000),1000)
 	}
@@ -175,25 +173,31 @@ export default class StepStore extends Store {
 		return this.acceleration.data;
 	}
 	
-	setInfo(info){
-		for (let [k,v] of info){
-			console.log(k+':'+v)
-		}
-		this.info.dispatch(info)
+	setInfo(info){ // [[],[]]
+		info = new Map(info)
+		this.info.dispatch((info));
+		this.setTargetStep(info.get(InfoType.TARGET));
 		storage.save({key:StorageKeys.INFO, data:[...info]})
 	}
-	setTodayStep(todayStep){
-		this.todayStep.dispatch(todayStep)
+	setTodayStep(todayStep){// [[],[]]
+		todayStep = new Map(todayStep)
+		this.todayStep.dispatch((todayStep))
+		storage.save({key:StorageKeys.TODAY_STEP, data:[...todayStep]})
 	}
-	setWeekStep(weekStep){
-		this.weekStep.dispatch(weekStep)
+	setWeekStep(weekStep){// [[],[]]
+		weekStep = new Map(weekStep)
+		this.weekStep.dispatch((weekStep))
+		storage.save({key:StorageKeys.WEEK_STEP, data:[...weekStep]})
 	}
-	setNowStep(step){
+	setNowStep(step){ //''
 		this.nowStep.dispatch(step)
+		storage.save({key:StorageKeys.NOW_STEP, data:step})
 	}
-	setTargetStep(step){
-		this.targetStep.dispatch(step)
+	setTargetStep(step){ // ''
+		this.targetStep.dispatch(step);
+		storage.save({key:StorageKeys.TARGET_STEP, data:step})
 	}
+	
 	setAcceleration(acc){
 		let step = onSensorChanged(acc);
 		this.acceleration.dispatch(step)

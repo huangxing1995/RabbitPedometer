@@ -27,8 +27,10 @@ export class Home extends Component{
 	}
 	render(){
 		let {nowStep,todayStep,targetStep,acceleration} = this.props;
+		
 		// alert(acceleration);
 		let percent = Number(targetStep) ? Math.ceil(Number(nowStep)/Number(targetStep)*100) : 0;
+		if (percent>100) percent=100
 		let calorie = Math.ceil(Number(nowStep)*0.075);
 		let distance = Math.ceil(Number(nowStep)*0.0007);
 		return(

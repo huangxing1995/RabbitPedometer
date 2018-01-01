@@ -11,13 +11,15 @@ import {pxToDp} from '../../util'
 import stepStore from '../../store'
 import {wrapComponent} from 'react-eflow'
 import InfoList from './InfoList'
+import {InfoType} from '../../types'
+
 export class Info extends Component{
 	constructor(){
 		super();
 	}
 	
-	handleSave(newInfo){
-		stepStore.setInfo(newInfo);
+	handleSave(newInfo){ // map
+		stepStore.setInfo([...newInfo]);
 		
 	}
 	handleCancel(){
@@ -38,7 +40,7 @@ export class Info extends Component{
 						<View style={styles.fixCircleClipping}/>
 					</View>
 					<View style={styles.name}>
-						<Text style={{fontSize:26,fontWeight:'bold'}}>Judy</Text>
+						<Text style={{fontSize:26,fontWeight:'bold'}}>{info.get(InfoType.LAST_NAME)} {info.get(InfoType.FIRST_NAME)}</Text>
 					</View>
 				</View>
 				<InfoList

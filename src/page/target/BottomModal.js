@@ -34,6 +34,8 @@ export default class BottomModal extends Component{
 		this.setState({text:this.props.defaultValue})
 	}
 	handleModalHide(){
+		if (this.state.text === 'female') this.initial = 1;
+		else this.initial =0;
 		this.setState({text:''})
 	}
 	
@@ -46,8 +48,21 @@ export default class BottomModal extends Component{
 		} else {
 			keyboardType = 'numeric'
 		}
-		return(
-			<View style={styles.header}>
+		
+		let content = null;
+		if (this.props.type === InfoType.SEX){
+			content = (
+				<RadioForm
+					radio_props={this.radio_props}
+					labelHorizontal={true}
+					initial={this.initial}
+					labelStyle={{fontSize:18}}
+					labelWrapStyle={{justifyContent:'space-around'}}
+					onPress={(value) => {this.setState({text:value})}}
+				/>
+			)
+		} else {
+			content = (
 				<TextInput
 					style={styles.input}
 					onChangeText={(text) => this.setState({text})}
@@ -57,6 +72,11 @@ export default class BottomModal extends Component{
 					keyboardType={keyboardType}
 					underlineColorAndroid={"transparent"}
 				/>
+			)
+		}
+		return(
+			<View style={styles.header}>
+				{content}
 			</View>
 		)
 	}
