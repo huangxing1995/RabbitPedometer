@@ -11,11 +11,9 @@ import onSensorChanged from '../algorithm'
 const { Accelerometer } = RNSensors;
 
 const accelerationObservable = new Accelerometer({
-	updateInterval: 250, // defaults to 100ms
+	updateInterval: 100, // defaults to 100ms
 });
 global.accelerationObservable = accelerationObservable;
-
-
 
 const mockInfo = new Map([
 	[InfoType.FIRST_NAME,'Nick'],
@@ -194,6 +192,7 @@ export default class StepStore extends Store {
 		storage.save({key:StorageKeys.TODAY_STEP, data:[...todayStep]})
 	}
 	setWeekStep(weekStep){// [[],[]]
+		weekStep = new Map(weekStep)
 		this.weekStep.dispatch((weekStep))
 		storage.save({key:StorageKeys.WEEK_STEP, data:[...weekStep]})
 	}
