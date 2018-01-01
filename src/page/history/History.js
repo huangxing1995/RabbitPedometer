@@ -10,7 +10,7 @@ class History extends Component{
 	render() {
 		let {weekStep} = this.props;
 		return (
-			<View></View>
+			<ColumnChart steps={weekStep}/>
 		);
 	}
 }

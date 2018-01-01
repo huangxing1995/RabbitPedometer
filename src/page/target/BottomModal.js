@@ -25,7 +25,7 @@ export default class BottomModal extends Component{
 	}
 	
 	handleModalSave(){
-		this.props.handleModalSave(this.props.type, this.state.text)
+		this.props.handleModalSave(this.props.type, this.state.text.trim())
 	}
 	handleModalCancel(){
 		this.props.handleModalCancel();
