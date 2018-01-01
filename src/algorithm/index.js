@@ -39,26 +39,22 @@ var mCount = 0;
 
 var myDate = new Date()
 
-
-
 export default function onSensorChanged(acc) {
-    
+
     gravityNew = Math.sqrt(acc.x*acc.x + acc.y*acc.y + acc.z*acc.z)
     detectorNewStep(gravityNew)
-    return mCount
+    return mCount;
 }
-
-
-
 
 function detectorNewStep(values) {
     if (gravityOld == 0) {
         gravityOld = values;
     } else {
         if (detectorPeak(values, gravityOld)) {
+            var myDate = new Date()
             timeOfLastPeak = timeOfThisPeak;
             timeOfNow = myDate.getMilliseconds();
-            if (timeOfNow - timeOfLastPeak >= TimeInterval
+            if (Math.abs(timeOfNow - timeOfLastPeak) >= TimeInterval
                 && (peakOfWave - valleyOfWave >= ThreadValue)) {
                 timeOfThisPeak = timeOfNow;
                 /*
@@ -103,7 +99,7 @@ function detectorPeak(newValue, oldValue) {
     }
 
     if (!isDirectionUp && lastStatus
-        && (continueUpFormerCount >= 2 || oldValue >= 20)) {
+        && (continueUpFormerCount >= 2 && oldValue >= 14)) {
         peakOfWave = oldValue;
         return true;
     } else if (!lastStatus && isDirectionUp) {
@@ -126,6 +122,7 @@ function countStep(timeOfLastPeak, timeOfThisPeak) {
         }
     } else {//超时
         count = 1;//为1,不是0
+        mCount = 0;
     }
 
 }
