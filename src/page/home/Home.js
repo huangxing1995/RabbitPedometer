@@ -29,10 +29,10 @@ export class Home extends Component{
 		let {nowStep,todayStep,targetStep,acceleration} = this.props;
 		
 		// alert(acceleration);
-		let percent = Number(targetStep) ? Math.ceil(Number(nowStep)/Number(targetStep)*100) : 0;
+		let percent = Number(targetStep) ? Math.floor(Number(nowStep)/Number(targetStep)*100) : 0;
 		if (percent>100) percent=100
-		let calorie = Math.ceil(Number(nowStep)*0.075);
-		let distance = Math.ceil(Number(nowStep)*0.0007);
+		let calorie = Math.floor(Number(nowStep)*0.075);
+		let distance = Math.floor(Number(nowStep)*0.0007);
 		return(
 			<ScrollView style={styles.wrapper}>
 				<View style={styles.progress}>

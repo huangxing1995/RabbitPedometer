@@ -132,7 +132,7 @@ export class InfoList extends Component{
 	
 	render(){
 		return(
-			<View style={{flex:1}}>
+			<View style={{flex:1,		backgroundColor:"#fcfcfc",}}>
 				{this._renderList()}
 				{this._renderBtn()}
 				<BottomModal
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
 		borderBottomWidth:pxToDp(1),
 	},
 	footer:{
-		height:pxToDp(170),
+		height:pxToDp(200),
 		justifyContent:'space-between',
 		marginTop:pxToDp(100)
 	},

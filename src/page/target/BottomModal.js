@@ -88,7 +88,7 @@ export default class BottomModal extends Component{
 				style={{justifyContent:'center', alignItems:'center',}}
 				onModalShow={()=>this.handleModalShow()}
 				onModalHide={()=>this.handleModalHide()}
-				avoidKeyboard={true}
+				avoidKeyboard={false}
 			>
 				<View style={styles.wrapper}>
 					{this._renderContent()}
