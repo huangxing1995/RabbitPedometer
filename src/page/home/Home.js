@@ -22,9 +22,11 @@ export class Home extends Component{
 		accelerationObservable
 			.subscribe(acceleration => stepStore.setAcceleration(acceleration));
 	}
+	
 	componentWillUnmount(){
 		accelerationObservable.stop();
 	}
+	
 	render(){
 		let {nowStep,todayStep,targetStep,acceleration} = this.props;
 		
@@ -32,9 +34,10 @@ export class Home extends Component{
 		let percent = Number(targetStep) ? Math.floor(Number(nowStep)/Number(targetStep)*100) : 0;
 		if (percent>100) percent=100
 		let calorie = Math.floor(Number(nowStep)*0.075);
-		let distance = Math.floor(Number(nowStep)*0.0007);
+		let distance = (Number(nowStep)*0.0007).toFixed(1);
 		return(
 			<ScrollView style={styles.wrapper}>
+				
 				<View style={styles.progress}>
 					<ProgressCircle
 						percent={percent}
@@ -79,6 +82,7 @@ const styles = StyleSheet.create({
 		flex:1,
 		backgroundColor:'#f0f0f0'
 	},
+	
 	header:{
 		height:pxToDp(100),
 		justifyContent:'space-between',
