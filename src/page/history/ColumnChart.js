@@ -47,7 +47,7 @@ class ColumnChart extends Component{
 					</View>
 					<View style={styles.column}>
 						{[...steps].map(([day, step], index) => {
-							let height = (step / this.maxHeight * 110);
+							let height = (step / 10000 * 110);
 							
 							return (
 								<View style={{justifyContent:'center',alignItems:'center'}} key={index}>

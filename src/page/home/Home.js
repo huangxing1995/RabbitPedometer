@@ -7,12 +7,11 @@ import {
 	StyleSheet,
 	ScrollView
 } from 'react-native'
-import ProgressCircle from 'react-native-progress-circle'
+import ProgressCircle from './ProgressCircle'
 import {pxToDp} from '../../util'
 import LineChart from './LineChart'
 import stepStore from '../../store'
 import {wrapComponent} from "react-eflow";
-
 
 export class Home extends Component{
 	constructor(props){
@@ -28,11 +27,11 @@ export class Home extends Component{
 	}
 	
 	render(){
-		let {nowStep,todayStep,targetStep,acceleration} = this.props;
+		let {nowStep,todayStep,targetStep} = this.props;
 		
 		// alert(acceleration);
 		let percent = Number(targetStep) ? Math.floor(Number(nowStep)/Number(targetStep)*100) : 0;
-		if (percent>100) percent=100
+		if (percent>100) percent=100;
 		let calorie = Math.floor(Number(nowStep)*0.075);
 		let distance = (Number(nowStep)*0.0007).toFixed(1);
 		return(

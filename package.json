@@ -12,8 +12,6 @@
 		"react-eflow": "^1.2.13",
 		"react-native": "0.44.3",
 		"react-native-modal": "^4.1.1",
-		"react-native-percentage-circle": "^1.0.6",
-		"react-native-progress-circle": "^2.0.0",
 		"react-native-sensors": "^2.4.2",
 		"react-native-simple-radio-button": "^2.7.1",
 		"react-native-storage": "^0.2.2",

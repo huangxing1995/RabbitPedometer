@@ -21,7 +21,7 @@ const mockInfo = new Map([
 	[InfoType.AGE,'1'],
 	[InfoType.HEIGHT,'0'],
 	[InfoType.SEX,'male'],
-	[InfoType.TARGET,'10000'],
+	[InfoType.TARGET,'9000'],
 ]);
 const mockTodayStep = new Map([
 	[HourType.Hour_00,'0'],
@@ -40,7 +40,7 @@ const mockWeekStep = new Map([
 	[DayType.DAY_7,'0'],
 ]);
 const mockNowStep = '0';
-const mockTarget = '10000';
+const mockTarget = '9000';
 
 const LastSevenDay = 7
 
@@ -56,11 +56,12 @@ export default class StepStore extends Store {
 			}
 		);
 		this.step = 0;
-		this.baseNowStep = 0;
+		this.baseStep = 0;
 		this.step_Hours = [0, 0, 0, 0, 0];
 		this.LastSevenDay_step = [0,0,0,0,0,0,0];
+		this.flag = false;
 	}
-	
+
 	init() {
 		// 读取本地缓存内容
 		/*******************************************************************************/
@@ -71,7 +72,7 @@ export default class StepStore extends Store {
 			enableCache: true,
 		})
 		global.storage = storage;
-		
+
 		// info
 		storage.load({key:StorageKeys.INFO})
 			.then(res=>{
@@ -104,12 +105,11 @@ export default class StepStore extends Store {
 		storage.load({key:StorageKeys.NOW_STEP})
 			.then(res=>{
 				this.setNowStep(res)
-				this.baseNowStep = parseInt(res)
+				this.baseStep = parseInt(res)
 			})
 			.catch(err=>{
 				console.log('no data about' + StorageKeys.NOW_STEP)
 				this.setNowStep(mockNowStep)
-
 			})
 		// target
 		storage.load({key:StorageKeys.TARGET_STEP})
@@ -123,28 +123,28 @@ export default class StepStore extends Store {
 		// setTimeout(()=>this.setNowStep(6000),1000)
 	}
 	info(){
-		return this.info.data;
+		return this.info.data();
 	}
 	nowStep(){
-		return this.nowStep.data;
+		return this.nowStep.data();
 	}
 	todayStep(){
-		return this.todayStep.data;
+		return this.todayStep.data();
 	}
 	weekStep(){
-		return this.weekStep.data;
+		return this.weekStep.data();
 	}
 	targetStep(){
-		let data = this.info().data;
-		let target = data.get(TARGET);
+		let data = this.info.data();
+		let target = data.get(InfoType.TARGET);
 		this.targetStep.dispatch(target);
-		
-		return this.targetStep.data;
+
+		return this.targetStep.data();
 	}
 	acceleration(){
-		return this.acceleration.data;
+		return this.acceleration.data();
 	}
-	
+
 	setInfo(info){ // [[],[]]
 		info = new Map(info)
 		this.info.dispatch((info));
@@ -172,29 +172,32 @@ export default class StepStore extends Store {
 
 	setAcceleration(acc){
 		// this.acceleration.dispatch(acc);
-		this.step = onSensorChanged(acc) + this.baseNowStep;
+		this.step = onSensorChanged(acc) + this.baseStep;
 		// this.setNowStep(this.step);
-		console.log(this.step)
+		console.log(this.step);
 		this.acceleration.dispatch(this.step);
-
+		// 设置当前步数
 		this.setNowStep(this.step.toString());
-
 		
 		var myDate = new Date()
 		var Hour = myDate.getHours()
 		var Minutes = myDate.getMinutes();
 		var Seconds = myDate.getSeconds();
 		var Hours = [0, 6, 12, 18, 24];
-		var temp_left = 0;
+		var temp_left = 0; // 当前时间插入位置
 		for(var i = 0; i < 5; i++) {
-			if(Hour > Hours[i])
+			if(Hour >= Hours[i])
 				temp_left++;
 		}
-		if(Minutes === 0 && Seconds === 0) {
+		// 判断整点
+		if(Minutes < 1 && Seconds <= 3) {
 			if(Hour === 0) {
-				this.step = 0;
-				this.step_Hours = [0, 0, 0, 0, 0];
-        this.step_Hours[0] = this.step
+				if (this.flag) {
+					this.step = 0;
+					this.baseStep = 0;
+					this.step_Hours = [0, 0, 0, 0, 0]
+					this.flag = !this.flag
+				}
 			}
 			if(Hour === 6) {
 				this.step_Hours[1] = this.step
@@ -206,11 +209,19 @@ export default class StepStore extends Store {
 				this.step_Hours[3] = this.step
 			}
 		}
-		if(Hour === 23 && Minutes === 59 && Seconds === 59) {
-			this.step_Hours[4] = this.step
-			this.step = 0
-			this.LastSevenDay_step.shift();
-			this.LastSevenDay_step.push(this.step_Hours[4])
+		if(Hour === 13 && Minutes === 12 && Seconds < 2) {
+			this.step_Hours[2] = this.step
+		}
+		// 24点清零
+		if(Hour === 23 && Minutes >= 59 && Seconds >= 56) {
+			if(!this.flag) {
+				this.step_Hours[4] = this.step
+				this.LastSevenDay_step.pop();
+				this.step = 0
+				this.LastSevenDay_step.unshift(this.step);
+				this.setNowStep(this.step.toString())
+				this.flag = !this.flag
+			}
 		}
 
 		var today_step = new Map()
@@ -223,17 +234,23 @@ export default class StepStore extends Store {
 		for(var i = temp_left; i < 5; i++) {
       today_step.set(HoursType[i], this.step_Hours[i].toString())
 		}
-		this.setTodayStep([...today_step]);
+		this.setTodayStep([...today_step])
 
+		
+		
+		
+		
+		
 		var	week_step = new Map()
 
-		week_step.set(DayType.DAY_1, this.LastSevenDay_step[0].toString())
+		week_step.set(DayType.DAY_1, this.step.toString())
 		week_step.set(DayType.DAY_2, this.LastSevenDay_step[1].toString())
 		week_step.set(DayType.DAY_3, this.LastSevenDay_step[2].toString())
 		week_step.set(DayType.DAY_4, this.LastSevenDay_step[3].toString())
 		week_step.set(DayType.DAY_5, this.LastSevenDay_step[4].toString())
 		week_step.set(DayType.DAY_6, this.LastSevenDay_step[5].toString())
 		week_step.set(DayType.DAY_7, this.LastSevenDay_step[6].toString())
+		
 		this.setWeekStep([...week_step])
 	}
 }

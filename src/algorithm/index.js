@@ -39,8 +39,18 @@ var mCount = 0;
 
 var myDate = new Date()
 
+export function isThisDay() {
+	var nowHour = myDate.getHours()
+	var nowMinute = myDate.getMinutes()
+	var nowSencond = myDate.getSeconds()
+	if(nowHour === 23 && nowMinute === 59 && nowSencond >= 59) {
+		mCount = 0
+	}
+}
+
 export default function onSensorChanged(acc) {
 
+	  isThisDay()
     gravityNew = Math.sqrt(acc.x*acc.x + acc.y*acc.y + acc.z*acc.z)
     detectorNewStep(gravityNew)
     return mCount;
@@ -99,7 +109,7 @@ function detectorPeak(newValue, oldValue) {
     }
 
     if (!isDirectionUp && lastStatus
-        && (continueUpFormerCount >= 2 && oldValue >= 14)) {
+        && (continueUpFormerCount >= 2 && oldValue >= 12)) {
         peakOfWave = oldValue;
         return true;
     } else if (!lastStatus && isDirectionUp) {
@@ -112,17 +122,7 @@ function detectorPeak(newValue, oldValue) {
 
 function countStep(timeOfLastPeak, timeOfThisPeak) {
     if (timeOfThisPeak - timeOfLastPeak <= 3000) {
-        if (count < 9) {
-            count++;
-        } else if (count == 9) {
-            count++;
-            mCount += count;
-        } else {
-            mCount++;
-        }
-    } else {//超时
-        count = 1;//为1,不是0
-        mCount = 0;
+        mCount ++
     }
 
 }
