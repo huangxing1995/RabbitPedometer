@@ -20,7 +20,8 @@ class LineChart extends Component{
 			arr.forEach((item)=>max = max>parseInt(item[1])?max:parseInt(item[1]))
 			
 		}
-		return max;
+		if (max > 2000) return max;
+		else return 2000;
 	}
 	render(){
 		let {steps} = this.props;
@@ -30,7 +31,7 @@ class LineChart extends Component{
 				<View style={styles.line}>
 					{[...steps].map(([time,step], index) => {
 						// let height = (step / this.maxHeight * 110);
-						let height = (step / 10000 * 110);
+						let height = (step / 2000 * 110);
 						
 						return (
 							<View style={{justifyContent:'center',alignItems:'center'}} key={index}>

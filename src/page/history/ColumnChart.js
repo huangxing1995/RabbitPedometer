@@ -16,7 +16,8 @@ class ColumnChart extends Component{
 	getMaxHeight(arr){
 		let max = 0;
 		arr.forEach((item)=>max = max>item[1]?max:item[1])
-		return max;
+		if (max > 2000) return max;
+		else return 2000;
 	}
 	getAverage(steps){ //map
 		let i = 0,sum = 0;
@@ -47,11 +48,11 @@ class ColumnChart extends Component{
 					</View>
 					<View style={styles.column}>
 						{[...steps].map(([day, step], index) => {
-							let height = (step / 10000 * 110);
+							let height = (step / this.maxHeight * 110);
 							
 							return (
 								<View style={{justifyContent:'center',alignItems:'center'}} key={index}>
-									<View>
+									<View style={{width:pxToDp(50),justifyContent:'center',alignItems:'center'}}>
 										<Text style={[styles.txt,{fontSize:8}]}>{step}</Text>
 									</View>
 									<View style={[styles.linearGradient,{height}]}
@@ -64,7 +65,9 @@ class ColumnChart extends Component{
 						{[...steps].map(([day,step], index) => {
 							return (
 								<View key={index}>
-									<Text style={[styles.txt,{fontSize:12}]} key={index}>{day}</Text>
+									<View style={{width:pxToDp(50),justifyContent:'center',alignItems:'center'}}>
+										<Text style={[styles.txt,{fontSize:12}]} key={index}>{day}</Text>
+									</View>
 								</View>
 							)
 						})}
